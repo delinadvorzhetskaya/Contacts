@@ -10,15 +10,12 @@ import UIKit
 class ContactsSecondPageController: UITableViewController {
     
     let personsList = Person.getPersonsContacts()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    var persons = [Person]()
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        8
+        persons.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -27,15 +24,15 @@ class ContactsSecondPageController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "secondCell", for: indexPath)
+        
+        let person = persons[indexPath.section]
         var content = cell.defaultContentConfiguration()
         
         switch indexPath.row {
             case 0:
-            content.text = personsList[indexPath.section].number
-            case 1:
-            content.text = personsList[indexPath.section].mail
+            content.text = person.number
             default:
-                break
+                content.text = person.mail
             }
         
         cell.contentConfiguration = content
@@ -43,8 +40,11 @@ class ContactsSecondPageController: UITableViewController {
         return cell
     }
     
-    override func tableView(
-        _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        personsList[section].firstName + " " + personsList[section].lastName
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+            persons[section].fullName
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
